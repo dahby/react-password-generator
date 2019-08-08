@@ -1,5 +1,5 @@
 import React from 'react';
-import Slider from '@material-ui/core/slider'
+import { Slider } from '@material-ui/core'
 
 class PasswordGenerator extends React.Component {
   constructor(){
