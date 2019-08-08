@@ -1,4 +1,5 @@
 import React from 'react';
+import Slider from '@material-ui/core/slider'
 
 class PasswordGenerator extends React.Component {
   constructor(){
@@ -19,11 +20,8 @@ class PasswordGenerator extends React.Component {
   }
 
   setPasswordLength = (event) => {
-    if (event.target.value < 0) {
-      event.target.value = 0;
-    }
     this.setState({
-      length: event.target.value
+      length: parseInt(event.target.textContent, 10)
     }, () => this.populateScramble())
   }
 
@@ -34,29 +32,56 @@ class PasswordGenerator extends React.Component {
   }
 
   populateScramble = () => {
-    let scrambleString = '';
+    let scrambleArray = [];
     if (this.state.uppers) {
-      scrambleString += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    }
-    if (this.state.lowers) {
-      scrambleString += 'abcdefghijklmnopqrstuvwxyz';
-    }
-    if (this.state.nums) {
-      scrambleString += '0123456789';
+      scrambleArray.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
     }
     if (this.state.symbols) {
-      scrambleString += '!@#$%^&*';
+      scrambleArray.push('!@#$%^&*');
+    }
+    if (this.state.lowers) {
+      scrambleArray.push('abcdefghijklmnopqrstuvwxyz');
+    }
+    if (this.state.nums) {
+      scrambleArray.push('0123456789');
     }
     this.setState({
-      scramble: scrambleString.split('')
+      scramble: scrambleArray
     }, () => this.generateNewPassword())
   }
 
+  furtherScramble = (arr) => {
+    const ITERATIONS = 4
+    for (let i = 0; i < ITERATIONS; i++) {
+      const firstIndex = Math.floor(Math.random() * arr.length)
+      const secondIndex = Math.floor(Math.random() * arr.length)
+      if (firstIndex !== secondIndex) {
+        const temp = arr[firstIndex];
+        arr[firstIndex] = arr[secondIndex];
+        arr[secondIndex] = temp
+      }
+      console.log(arr);
+    }
+    return arr;
+  }
+
   generateNewPassword = () => {
+    if (this.state.scramble.length === 0) {
+      return;
+    }
     let newPassword = ''
+    let prevChar = '';
+    let genArray = [...this.state.scramble]
+    genArray = this.furtherScramble(genArray)
     for (let i = 0; i < this.state.length; i++) {
-      const rando = Math.floor(Math.random() * Math.floor(this.state.scramble.length))
-      newPassword += this.state.scramble[rando];
+      const randomArray = Math.floor(Math.random() * genArray.length);
+      let randomChar = prevChar;
+      while (randomChar === prevChar) {
+        randomChar = Math.floor(Math.random() * Math.floor(genArray[randomArray].length))
+      }
+      prevChar = randomChar
+      newPassword += genArray[randomArray][randomChar];
+      genArray = this.furtherScramble(genArray)
     }
     this.setState({
       password: newPassword
@@ -65,9 +90,11 @@ class PasswordGenerator extends React.Component {
 
   render() {
     return(
-      <div>
-        <h3>{this.state.password || 'Password'}</h3>
-        <input className='length-input' value={this.state.length} type='number' onChange={this.setPasswordLength} placeholder={'Set Password Length'}/>
+      <React.Fragment>
+        <div className='slider'>
+          <h3>{this.state.password || 'Password Goes Here'}</h3>
+          <Slider valueLabelDisplay={'auto'} onChangeCommitted={this.setPasswordLength} min={0} max={32}/>
+        </div>
         <form>
           <label>
             <input type={'checkbox'} name={'uppers'} checked={this.state.uppers} onChange={this.toggleBoxes}/>
@@ -86,7 +113,7 @@ class PasswordGenerator extends React.Component {
             !@#$%^&*
           </label>
         </form>
-      </div>
+      </React.Fragment>
     )
   }
 }
