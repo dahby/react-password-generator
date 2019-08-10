@@ -1,9 +1,13 @@
-import React from 'react';
-import { Slider } from '@material-ui/core'
+import React from './node_modules/react';
+import { Slider } from './node_modules/@material-ui/core';
+import './password.css'
 
 class PasswordGenerator extends React.Component {
   constructor(){
     super();
+
+    this.slider = React.createRef()
+
     this.state = {
       password: '',
       length: 0,
@@ -20,9 +24,13 @@ class PasswordGenerator extends React.Component {
   }
 
   setPasswordLength = (event) => {
-    this.setState({
-      length: parseInt(event.target.textContent, 10)
-    }, () => this.populateScramble())
+    // debugger
+    console.log(this.slider.current.textContent)
+    if (event.target.textContent) {
+      this.setState({
+        length: parseInt(this.slider.current.textContent, 10)
+      }, () => this.populateScramble())
+    }
   }
 
   toggleBoxes = (event) => {
@@ -60,7 +68,6 @@ class PasswordGenerator extends React.Component {
         arr[firstIndex] = arr[secondIndex];
         arr[secondIndex] = temp
       }
-      console.log(arr);
     }
     return arr;
   }
@@ -72,7 +79,7 @@ class PasswordGenerator extends React.Component {
     let newPassword = ''
     let prevChar = '';
     let genArray = [...this.state.scramble]
-    genArray = this.furtherScramble(genArray)
+    // genArray = this.furtherScramble(genArray)
     for (let i = 0; i < this.state.length; i++) {
       const randomArray = Math.floor(Math.random() * genArray.length);
       let randomChar = prevChar;
@@ -81,7 +88,7 @@ class PasswordGenerator extends React.Component {
       }
       prevChar = randomChar
       newPassword += genArray[randomArray][randomChar];
-      genArray = this.furtherScramble(genArray)
+      // genArray = this.furtherScramble(genArray)
     }
     this.setState({
       password: newPassword
@@ -93,7 +100,7 @@ class PasswordGenerator extends React.Component {
       <React.Fragment>
         <div className='slider'>
           <h3>{this.state.password || 'Password Goes Here'}</h3>
-          <Slider valueLabelDisplay={'auto'} onChangeCommitted={this.setPasswordLength} min={0} max={32}/>
+          <Slider ref={this.slider} valueLabelDisplay={'auto'} onChangeCommitted={this.setPasswordLength} min={0} max={32}/>
         </div>
         <form>
           <label>

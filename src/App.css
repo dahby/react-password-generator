@@ -12,12 +12,3 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.length-input {
-  margin-bottom: 10px;
-}
-
-.slider {
-  max-width: 60%;
-  margin: auto;
-}
