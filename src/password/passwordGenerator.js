@@ -25,7 +25,7 @@ class PasswordGenerator extends React.Component {
 
   setPasswordLength = () => {
     this.setState({
-      length: parseInt(this.slider.current.textContent, 10)
+      length: this.slider.current.textContent
     }, () => this.populateScramble())
   }
 
@@ -70,6 +70,9 @@ class PasswordGenerator extends React.Component {
 
   generateNewPassword = () => {
     if (this.state.scramble.length === 0) {
+      this.setState({
+        password: '',
+      })
       return;
     }
     let newPassword = ''
@@ -95,7 +98,7 @@ class PasswordGenerator extends React.Component {
     return(
       <React.Fragment>
         <div className='slider'>
-          <h3>{this.state.password || 'Password Goes Here'}</h3>
+          <h3>{this.state.password}</h3>
           <Slider ref={this.slider} valueLabelDisplay={'auto'} onChangeCommitted={this.setPasswordLength} min={0} max={32}/>
         </div>
         <form>
