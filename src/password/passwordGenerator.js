@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component } from 'react';
 import PasswordSlider from './passwordSlider';
 import Checkbox from '../checkbox/checkbox'
 import './password.css';
@@ -24,6 +24,18 @@ class PasswordGenerator extends Component {
     this.populateScramble()
   }
 
+  generateCheckboxes = () => {
+    const chars = [
+      ['A-Z', 'uppers'], 
+      ['a-z', 'lowers'], 
+      ['0-9', 'nums'], 
+      ['!@#$%^&*', 'symbols']
+    ];
+    return chars.map((char, idx) => {
+      return <Checkbox key={idx} name={char[1]} checked={this.state[char[1]]} toggleBoxes={this.toggleBoxes} chars={char[0]} />
+    })
+  }
+
   setPasswordLength = () => {
     this.setState({
       length: this.slider.current.textContent
@@ -37,7 +49,7 @@ class PasswordGenerator extends Component {
   }
 
   populateScramble = () => {
-    let scrambleArray = [];
+    const scrambleArray = [];
     if (this.state.uppers) {
       scrambleArray.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
     }
@@ -71,10 +83,9 @@ class PasswordGenerator extends Component {
 
   generateNewPassword = () => {
     if (this.state.scramble.length === 0) {
-      this.setState({
+      return this.setState({
         password: '',
       })
-      return;
     }
     let newPassword = ''
     let prevChar = '';
@@ -97,29 +108,15 @@ class PasswordGenerator extends Component {
 
   render() {
     return(
-      <Fragment>
+      <div className='container'>
         <h3>{this.state.password}</h3>
-        <PasswordSlider sliderRef={this.slider} setPasswordLength = {this.setPasswordLength}/>
-        <Checkbox name={'uppers'} checked={this.state.uppers} toggleBoxes={this.toggleBoxes} chars={'A-Z'}/>
-        {/* <form>
-          <label>
-            <input type={'checkbox'} name={'uppers'} checked={this.state.uppers} onChange={this.toggleBoxes}/>
-            A-Z
-          </label>
-          <label>
-            <input type={'checkbox'} name={'lowers'} checked={this.state.lowers} onChange={this.toggleBoxes}/>
-            a-z
-          </label>
-          <label>
-            <input type={'checkbox'} name={'nums'} checked={this.state.nums} onChange={this.toggleBoxes}/>
-            0-9
-          </label>
-          <label>
-            <input type={'checkbox'} name={'symbols'} checked={this.state.symbols} onChange={this.toggleBoxes}/>
-            !@#$%^&*
-          </label>
-        </form> */}
-      </Fragment>
+        <PasswordSlider 
+          sliderRef={this.slider} setPasswordLength = {this.setPasswordLength}
+          />
+        <div className='checkboxes'>
+          {this.generateCheckboxes()}
+        </div>
+      </div>
     )
   }
 }

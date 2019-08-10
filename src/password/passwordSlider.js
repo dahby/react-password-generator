@@ -6,6 +6,7 @@ const useStyles = makeStyles({
   root: {
     color: 'green',
     maxWidth: '80%',
+    margin: 'auto',
     marginTop: '30px'
   }
 })
