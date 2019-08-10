@@ -1,5 +1,5 @@
-import React from './node_modules/react';
-import { Slider } from './node_modules/@material-ui/core';
+import React from 'react';
+import { Slider } from '@material-ui/core';
 import './password.css'
 
 class PasswordGenerator extends React.Component {
@@ -23,14 +23,10 @@ class PasswordGenerator extends React.Component {
     this.populateScramble()
   }
 
-  setPasswordLength = (event) => {
-    // debugger
-    console.log(this.slider.current.textContent)
-    if (event.target.textContent) {
-      this.setState({
-        length: parseInt(this.slider.current.textContent, 10)
-      }, () => this.populateScramble())
-    }
+  setPasswordLength = () => {
+    this.setState({
+      length: parseInt(this.slider.current.textContent, 10)
+    }, () => this.populateScramble())
   }
 
   toggleBoxes = (event) => {
@@ -44,14 +40,14 @@ class PasswordGenerator extends React.Component {
     if (this.state.uppers) {
       scrambleArray.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
     }
-    if (this.state.symbols) {
-      scrambleArray.push('!@#$%^&*');
-    }
     if (this.state.lowers) {
       scrambleArray.push('abcdefghijklmnopqrstuvwxyz');
     }
     if (this.state.nums) {
       scrambleArray.push('0123456789');
+    }
+    if (this.state.symbols) {
+      scrambleArray.push('!@#$%^&*');
     }
     this.setState({
       scramble: scrambleArray
@@ -79,7 +75,7 @@ class PasswordGenerator extends React.Component {
     let newPassword = ''
     let prevChar = '';
     let genArray = [...this.state.scramble]
-    // genArray = this.furtherScramble(genArray)
+    genArray = this.furtherScramble(genArray)
     for (let i = 0; i < this.state.length; i++) {
       const randomArray = Math.floor(Math.random() * genArray.length);
       let randomChar = prevChar;
@@ -88,7 +84,7 @@ class PasswordGenerator extends React.Component {
       }
       prevChar = randomChar
       newPassword += genArray[randomArray][randomChar];
-      // genArray = this.furtherScramble(genArray)
+      genArray = this.furtherScramble(genArray)
     }
     this.setState({
       password: newPassword

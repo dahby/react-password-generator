@@ -1,12 +1,12 @@
 import React from 'react';
-import PasswordGenerator from './Password/PasswordGenerator'
+import PasswordGenerator from './password/passwordGenerator'
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Generate Password</h1>
+        <h1>React Password Generator</h1>
       </header>
       <PasswordGenerator/>
     </div>
