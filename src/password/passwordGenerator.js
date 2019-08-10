@@ -1,8 +1,8 @@
-import React from 'react';
-import { Slider } from '@material-ui/core';
-import './password.css'
+import React, {Component, Fragment} from 'react';
+import PasswordSlider from './passwordSlider';
+import './password.css';
 
-class PasswordGenerator extends React.Component {
+class PasswordGenerator extends Component {
   constructor(){
     super();
 
@@ -96,11 +96,9 @@ class PasswordGenerator extends React.Component {
 
   render() {
     return(
-      <React.Fragment>
-        <div className='slider'>
-          <h3>{this.state.password}</h3>
-          <Slider ref={this.slider} valueLabelDisplay={'auto'} onChangeCommitted={this.setPasswordLength} min={0} max={32}/>
-        </div>
+      <Fragment>
+        <h3>{this.state.password}</h3>
+        <PasswordSlider sliderRef={this.slider} setPasswordLength = {this.setPasswordLength}/>
         <form>
           <label>
             <input type={'checkbox'} name={'uppers'} checked={this.state.uppers} onChange={this.toggleBoxes}/>
@@ -119,7 +117,7 @@ class PasswordGenerator extends React.Component {
             !@#$%^&*
           </label>
         </form>
-      </React.Fragment>
+      </Fragment>
     )
   }
 }
