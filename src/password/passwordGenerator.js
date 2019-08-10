@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import PasswordSlider from './passwordSlider';
+import Checkbox from '../checkbox/checkbox'
 import './password.css';
 
 class PasswordGenerator extends Component {
@@ -99,7 +100,8 @@ class PasswordGenerator extends Component {
       <Fragment>
         <h3>{this.state.password}</h3>
         <PasswordSlider sliderRef={this.slider} setPasswordLength = {this.setPasswordLength}/>
-        <form>
+        <Checkbox name={'uppers'} checked={this.state.uppers} toggleBoxes={this.toggleBoxes} chars={'A-Z'}/>
+        {/* <form>
           <label>
             <input type={'checkbox'} name={'uppers'} checked={this.state.uppers} onChange={this.toggleBoxes}/>
             A-Z
@@ -116,7 +118,7 @@ class PasswordGenerator extends Component {
             <input type={'checkbox'} name={'symbols'} checked={this.state.symbols} onChange={this.toggleBoxes}/>
             !@#$%^&*
           </label>
-        </form>
+        </form> */}
       </Fragment>
     )
   }
